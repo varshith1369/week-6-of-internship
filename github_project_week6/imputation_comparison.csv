@@ -1,0 +1,5 @@
+method,RMSE_one_dim_hidden,MAE_one_dim_hidden,RMSE_all_dims_hidden,MAE_all_dims_hidden
+mean,0.994,0.827,0.985,0.822
+median,0.986,0.821,0.986,0.815
+regression,0.086,0.05,0.082,0.049
+knn,0.089,0.048,0.077,0.055

@@ -1,0 +1,99 @@
+n = 53794
+
+== A. ASSUMPTIONS ==
+Shapiro-Wilk log_price (n=5000): W=0.966 p=<0.001
+Shapiro-Wilk residuals (n=5000): W=0.9929 p=<0.001
+residual skew 0.208 excess kurtosis 2.624
+D'Agostino K2 residuals: 3702.9 p=<0.001
+Levene (log_price by cut): W=122.3 p=<0.001
+Breusch-Pagan (full model): LM=1350.3 p=<0.001
+group sds log_price by cut: {'Fair': 0.765, 'Good': 0.981, 'Very Good': 1.037, 'Premium': 1.03, 'Ideal': 0.993}
+residual sd by fitted-value tercile: {0: 0.15, 1: 0.117, 2: 0.13}
+min group n 1598 | exact duplicate rows 0
+
+== B. H1 ==
+Pearson, raw       r=0.9215 95% CI [0.9203, 0.9228] p=<0.001
+Spearman, raw      r=0.9629 95% CI [0.9623, 0.9635] p=<0.001
+Pearson, log-log   r=0.9659 95% CI [0.9654, 0.9665] p=<0.001
+bootstrap Spearman 95% CI [0.9622, 0.9635]
+log-log slope b=1.6766 HC3 95% CI [1.6726, 1.6805] R2=0.9330 t=825.4
+1% heavier => price +1.68% (CI 1.68 to 1.69)
+
+== C. H2 (cut) ==
+Welch ANOVA log_price ~ cut: F=269.8 df=(4, 9499) p=<0.001
+Kruskal-Wallis: H=961.7 p=<0.001 epsilon2=0.0179
+eta2 (unadjusted, cut on ln price) = 0.0179
+Games-Howell pairs (diff = mean ln price g2 - g1):
+       g1        g2   diff    p
+     Fair      Good -0.250 0.00
+     Fair Very Good -0.292 0.00
+     Fair   Premium -0.140 0.00
+     Fair     Ideal -0.450 0.00
+     Good Very Good -0.042 0.09
+     Good   Premium  0.110 0.00
+     Good     Ideal -0.200 0.00
+Very Good   Premium  0.152 0.00
+Very Good     Ideal -0.158 0.00
+  Premium     Ideal -0.310 0.00
+pairs significant at 0.05: 9 of 10
+Welch t Ideal vs Fair (ln price): t=-22.2 df=2020 p=<0.001 diff=-0.450 CI [-0.489, -0.410] Cohen d=-0.46
+  as price ratio: -36.2% (CI -38.7% to -33.6%)
+H2b ANCOVA cut | log_carat: F=876.7 p=<0.001 partial eta2=0.0612
+adjusted cut effects vs Fair (%, HC3 CI):
+      cut   pct    lo    hi   p
+     Good 17.91 15.84 20.02 0.0
+Very Good 27.32 25.18 29.50 0.0
+  Premium 27.03 24.90 29.20 0.0
+    Ideal 37.43 35.14 39.75 0.0
+unadjusted cut effects vs Fair (%): [('Good', np.float64(-22.1), np.float64(-25.6), np.float64(-18.4)), ('Very Good', np.float64(-25.3), np.float64(-28.4), np.float64(-22.1)), ('Premium', np.float64(-13.1), np.float64(-16.6), np.float64(-9.4)), ('Ideal', np.float64(-36.2), np.float64(-38.7), np.float64(-33.6))]
+bootstrap 95% CI Ideal vs Fair adjusted: [35.2%, 39.8%]
+
+== D. H3 ==
+carat    F=2786349.7 df=1 p=<0.001 partial eta2=0.9811
+cut      F=830.5 df=4 p=<0.001 partial eta2=0.0582
+colour   F=8360.9 df=6 p=<0.001 partial eta2=0.4826
+clarity  F=14653.8 df=7 p=<0.001 partial eta2=0.6561
+Spearman trend color_ord vs carat-adjusted ln price: rho=0.364 CI [0.356, 0.371] p=<0.001
+Spearman trend clarity_ord vs carat-adjusted ln price: rho=0.613 CI [0.608, 0.618] p=<0.001
+Spearman trend cut_ord vs carat-adjusted ln price: rho=0.210 CI [0.202, 0.218] p=<0.001
+J vs D colour: -40.0% [-40.4, -39.6] | IF vs I1 clarity: 204.3% [198.8, 210.0] | Ideal vs Fair: 17.6% [16.5, 18.6]
+Cohen f2 (full vs carat only): 2.863 | R2 full 0.9827 carat-only 0.9330
+
+== E. H4 ==
+depth_z: effect per 1 SD = -0.15% 95% CI [-0.32, 0.01] p(diff from 0)=0.066 | TOST (margin +/-2%) p=<0.001 | 90% CI [-0.29, -0.02]
+table_z: effect per 1 SD = -0.10% 95% CI [-0.26, 0.06] p(diff from 0)=0.225 | TOST (margin +/-2%) p=<0.001 | 90% CI [-0.23, 0.03]
+R2 without depth/table 0.98266 with 0.98266, delta 0.00000; partial R2 of the pair 0.00010
+SD depth 1.43 SD table 2.23
+
+== F. H5 ==
+Nested F-test carat-only vs full: F=9056.5 p=<0.001 | R2 0.9330 -> 0.9827 | AIC 8779 -> -63888
+10-fold CV RMSE(ln price): carat-only 0.2625 full 0.1336 | mean paired diff 0.1289 | naive paired t=157.7 p=<0.001 | Nadeau-Bengio corrected t=108.6 p=<0.001
+RMSE reduction 49.1%; Cohen d of paired diffs 49.9
+
+== G. H6 round weights (exploratory) ==
+share round weights 23.0% (n=12360)
+Welch t residuals round vs non-round: t=18.8 p=<0.001 diff=0.0252 CI [0.0226, 0.0278] Cohen d=0.19
+Mann-Whitney U p=<0.001 | rank-biserial r=-0.105
+regression indicator: +2.63% CI [2.36, 2.91] p=<0.001
+permutation test (5000): observed diff 0.0252, null sd 0.0014, p=0.0002 (min possible 0.0002)
+
+== H. H7 chi-square ==
+cut x size_class: chi2=2592.4 dof=16 p=<0.001 Cramer V=0.110 min expected=160.9
+color x size_class: chi2=5051.6 dof=24 p=<0.001 Cramer V=0.153 min expected=282.2
+clarity x size_class: chi2=8354.4 dof=28 p=<0.001 Cramer V=0.197 min expected=74.5
+share small by cut %: {'Fair': 4.3, 'Good': 19.1, 'Very Good': 24.6, 'Premium': 23.3, 'Ideal': 33.3}
+share large+ by cut %: {'Fair': 74.2, 'Good': 57.0, 'Very Good': 52.9, 'Premium': 57.5, 'Ideal': 39.3}
+size_class counts: {'small': 14334, 'medium': 12746, 'large': 9259, 'very_large': 12037, 'exceptional': 5418}
+
+== I. MULTIPLE TESTING (Holm) ==
+                               test     raw_p    holm_p  reject_H0
+   H1 carat-price (Pearson log-log)   <1e-300    1e-299       True
+   H2a cut unadjusted (Welch ANOVA) 5.33e-220 2.13e-219       True
+H2b cut adjusted for carat (ANCOVA)   <1e-300    1e-299       True
+                 H3 colour (ANCOVA)   <1e-300    1e-299       True
+                H3 clarity (ANCOVA)   <1e-300    1e-299       True
+  H4 depth (t-test, differs from 0)    0.0661     0.132      False
+  H4 table (t-test, differs from 0)     0.225     0.225      False
+   H5 full vs carat-only (nested F)   <1e-300    1e-299       True
+         H6 round weights (Welch t)  3.38e-78  1.01e-77       True
+         H7 cut x size (chi-square)   <1e-300    1e-299       True

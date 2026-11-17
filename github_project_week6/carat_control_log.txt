@@ -1,0 +1,47 @@
+== A. CONFOUNDING OF CARAT ==
+mean carat by cut:
+ cut
+Fair         1.04
+Good         0.85
+Very Good    0.81
+Premium      0.89
+Ideal        0.70
+Cut effect vs Fair on log(price), without and with carat control:
+       cut  without_carat  with_carat  pct_effect_without  pct_effect_with
+     Good         -0.250       0.165               -22.1             17.9
+Very Good         -0.292       0.242               -25.3             27.4
+  Premium         -0.140       0.239               -13.1             27.0
+    Ideal         -0.450       0.318               -36.2             37.4
+Median price by carat band x cut:
+ cut      Fair     Good  Very Good  Premium    Ideal
+band                                               
+<=0.5   996.0    686.0      684.0    827.0    824.0
+0.5-1  2595.0   2819.0     2652.0   2580.0   2353.0
+1-1.5  4532.0   5232.0     5836.0   5648.0   6468.0
+>1.5   9610.0  11819.0    12555.0  12670.0  12846.0
+
+== B. COLLINEARITY (VIF) ==
+VIF with x,y,z:
+ log_carat     97.6
+depth          7.8
+table          1.2
+x            499.2
+y            509.1
+z            435.7
+VIF after dropping x,y,z:
+ log_carat    1.0
+depth        1.1
+table        1.1
+
+== C. NON-LINEARITY TESTS ==
+R2 linear 0.9827 | quadratic 0.9828 | carat x clarity 0.9829
+AIC linear -63888 | quadratic -64289 | interaction -64597
+F-test quadratic term: F = 404.9 p = 1.02e-89
+F-test carat x clarity: F = 103.9 p = 9.4e-152
+quadratic coef on log_carat^2: 0.036
+R2 raw-price linear model 0.9159 (vs log-log 0.9827 )
+Pearson carat-price 0.922 | Spearman 0.963
+
+== D. LINEAR vs FLEXIBLE MODEL (5-fold CV, target log_price) ==
+Linear: RMSE(log) = 0.146 R2 = 0.9793
+Gradient boosting: RMSE(log) = 0.0994 R2 = 0.9904

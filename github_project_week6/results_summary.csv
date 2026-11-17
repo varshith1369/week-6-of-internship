@@ -1,0 +1,11 @@
+test,raw_p,holm_p,reject_H0
+H1 carat-price (Pearson log-log),<1e-300,1e-299,True
+H2a cut unadjusted (Welch ANOVA),5.33e-220,2.13e-219,True
+H2b cut adjusted for carat (ANCOVA),<1e-300,1e-299,True
+H3 colour (ANCOVA),<1e-300,1e-299,True
+H3 clarity (ANCOVA),<1e-300,1e-299,True
+"H4 depth (t-test, differs from 0)",0.0661,0.132,False
+"H4 table (t-test, differs from 0)",0.225,0.225,False
+H5 full vs carat-only (nested F),<1e-300,1e-299,True
+H6 round weights (Welch t),3.38e-78,1.01e-77,True
+H7 cut x size (chi-square),<1e-300,1e-299,True

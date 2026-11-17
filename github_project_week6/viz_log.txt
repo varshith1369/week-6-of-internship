@@ -1,0 +1,67 @@
+rows 53794
+count by cut {'Fair': 1598, 'Good': 4891, 'Very Good': 12069, 'Premium': 13748, 'Ideal': 21488}
+median price by cut {'Fair': 3282.0, 'Good': 3042.0, 'Very Good': 2647.0, 'Premium': 3182.0, 'Ideal': 1813.0}
+share premium+ideal % 65.5
+skew price 1.62 log_price 0.11 carat 1.11 | mean price 3933 median 2401
+share of diamonds <= 1 carat % 67.6 | price < 5000 % 72.7
+median price 0.8-1.0 ct by clarity {'I1': 2212.0, 'SI2': 3594.0, 'SI1': 4092.0, 'VS2': 4386.0, 'VS1': 4531.0, 'VVS2': 5922.0, 'VVS1': 6183.0, 'IF': 7093.0}
+median price 0.8-1.0 ct by cut {'Fair': 3302.0, 'Good': 3974.0, 'Very Good': 4140.0, 'Premium': 4067.0, 'Ideal': 4101.0}
+median price by carat band {'(0.2, 0.4]': 718.0, '(0.4, 0.6]': 1410.0, '(0.6, 0.8]': 2573.0, '(0.8, 1.0]': 4034.0, '(1.0, 1.2]': 5313.0, '(1.2, 1.5]': 7338.0, '(1.5, 2.0]': 11043.0, '(2.0, 2.5]': 15334.0, '(2.5, 3.0]': 16446.0}
+corr carat-price 0.922 | log-log 0.966
+log-log slope (elasticity) 1.677 intercept 8.449
+corr price: {'carat': 0.92, 'depth': -0.01, 'table': 0.13, 'x': 0.89, 'y': 0.89, 'z': 0.88, 'volume': 0.92, 'cut_ord': -0.05, 'color_ord': -0.17, 'clarity_ord': -0.15, 'price': 1.0}
+corr carat with cut_ord/color_ord/clarity_ord: {'cut_ord': -0.13, 'color_ord': -0.29, 'clarity_ord': -0.35}
+raw median by band x clarity:
+ clarity      I1      SI2      SI1      VS2      VS1     VVS2     VVS1       IF
+band                                                                          
+<=0.5     613.0    622.0    698.0    767.0    781.0    816.0    898.0    954.0
+0.5-1    1754.0   2555.0   2527.0   2415.0   2591.0   2530.0   2797.0   2792.0
+1-1.5    3509.0   4627.0   5339.0   6581.0   7487.0   9324.0  10567.0  10995.0
+>1.5     6755.0  12454.0  12195.0  13248.0  13320.0  13644.0  14603.0  13482.0
+adjusted premium % clarity x colour:
+ color        D     E     F     G     H     I     J
+clarity                                           
+I1       -37.0 -41.0 -44.0 -51.0 -51.0 -53.0 -58.0
+SI2      -13.0 -15.0 -17.0 -20.0 -21.0 -25.0 -31.0
+SI1        1.0  -4.0  -6.0 -11.0 -11.0 -18.0 -28.0
+VS2       18.0  12.0  11.0   6.0  -4.0 -13.0 -25.0
+VS1       25.0  18.0  17.0  14.0  -0.0  -9.0 -22.0
+VVS2      46.0  34.0  33.0  24.0   5.0  -7.0 -16.0
+VVS1      61.0  42.0  40.0  29.0  12.0  -6.0 -15.0
+IF       156.0  67.0  52.0  38.0  23.0   2.0 -12.0
+cut effect ignoring carat % [-22.1, -25.3, -13.1, -36.2] | controlling % [17.9, 27.3, 27.0, 37.4]
+forest table:
+   group     level   pct    lo    hi
+    cut      Good   8.4   7.6   9.3
+    cut Very Good  12.5  11.7  13.3
+    cut   Premium  15.0  14.2  15.8
+    cut     Ideal  17.6  16.7  18.4
+  color         E  -5.3  -5.6  -4.9
+  color         F  -9.0  -9.4  -8.6
+  color         G -14.8 -15.2 -14.5
+  color         H -22.2 -22.5 -21.8
+  color         I -31.1 -31.4 -30.8
+  color         J -40.0 -40.4 -39.7
+clarity       SI2  53.4  51.8  54.9
+clarity       SI1  80.8  79.0  82.7
+clarity       VS2 109.9 107.7 112.0
+clarity       VS1 125.1 122.8 127.5
+clarity      VVS2 157.7 155.0 160.4
+clarity      VVS1 176.8 173.8 179.8
+clarity        IF 204.3 200.8 208.0
+model R2 0.9827
+median price band x cut:
+ cut      Fair     Good  Very Good  Premium    Ideal
+band                                               
+<=0.5   996.0    686.0      684.0    827.0    824.0
+0.5-1  2595.0   2819.0     2652.0   2580.0   2353.0
+1-1.5  4532.0   5232.0     5836.0   5648.0   6468.0
+>1.5   9610.0  11819.0    12555.0  12670.0  12846.0
+max |mean residual| linear 0.137 quadratic 0.133 | R2 0.9827 0.9828 | AIC -63888 -64289
+lin residual first/last bins {Interval(-1.6099999999999999, -1.204, closed='right'): 0.081, Interval(-1.204, -1.171, closed='right'): 0.071, Interval(-1.171, -1.139, closed='right'): 0.041, Interval(0.329, 0.419, closed='right'): 0.021, Interval(0.419, 0.669, closed='right'): -0.011, Interval(0.669, 1.611, closed='right'): -0.03}
+importance {'table': 0.001, 'depth': 0.001, 'cut_ord': 0.004, 'color_ord': 0.038, 'clarity_ord': 0.083, 'log_carat': 2.317}
+PDP clarity [1850.0, 2155.0, 2155.0, 2476.0, 2672.0, 3009.0, 3009.0, 3264.0]
+PDP carat points [(0.3, 586), (0.43, 919), (0.61, 1822), (0.86, 4215), (1.23, 7585)]
+holdout R2(log), RMSE(log), MAE($), median APE %: {'lin': [0.979, np.float64(0.146), 455.505, np.float64(9.267)], 'gb': [0.99, np.float64(0.1), 276.269, np.float64(5.818)]}
+count at 0.99/1.00/1.01: {0.99: 23, 1.0: 1548, 1.01: 2240} | median {0.99: 4780.0, 1.0: 4867.0, 1.01: 5090.0, 0.49: 1225.0, 0.5: 1436.0, 0.51: 1633.0, 1.49: 8779.0, 1.5: 9827.5, 1.51: 10104.5}
+share of diamonds at exactly 0.30/0.50/0.70/1.00/1.01 ct: {0.3: 5.1, 0.5: 2.5, 0.7: 3.9, 1.0: 3.0, 1.01: 4.4}

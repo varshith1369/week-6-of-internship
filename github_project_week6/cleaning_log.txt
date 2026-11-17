@@ -1,0 +1,103 @@
+== 1. INSPECTION ==
+shape (53940, 10) | nulls: 0 | exact duplicates: 146
+zeros per dim: {'x': 8, 'y': 7, 'z': 20} | rows with any zero: 20
+cut unique: ['Fair', 'Good', 'Ideal', 'Premium', 'Very Good'] | whitespace/case issues: 0
+color unique: ['D', 'E', 'F', 'G', 'H', 'I', 'J'] | whitespace/case issues: 0
+clarity unique: ['I1', 'IF', 'SI1', 'SI2', 'VS1', 'VS2', 'VVS1', 'VVS2'] | whitespace/case issues: 0
+depth inconsistent with x,y,z (|diff|>1pt) among valid rows: 80
+table range 43.0 95.0 | depth range 43.0 79.0
+IQR outliers raw: {'carat': 1889, 'depth': 2545, 'table': 605, 'price': 3540, 'x': 32, 'y': 29, 'z': 49}
+
+== 2. DUPLICATES ==
+removed 146 rows -> 53794
+
+== 3. MISSING VALUES ==
+impossible entries per dim: {'x': 7, 'y': 8, 'z': 20} | rows affected: 22
+rows with 2+ bad dims: 7 | rows with all 3 bad: 6
+rows with a dimension > 20 mm (all 3 dimensions re-imputed): 3
+       carat  price     x      y      z
+2201    1.00   3142  6.55   6.48   0.00
+2308    1.01   3167  6.66   6.60   0.00
+4778    1.10   3696  6.50   6.47   0.00
+5457    1.01   3837  6.50   6.47   0.00
+10145   1.50   4731  7.15   7.04   0.00
+11156   1.07   4954  0.00   6.62   0.00
+11935   1.00   5139  0.00   0.00   0.00
+13570   1.15   5564  6.88   6.83   0.00
+15914   1.14   6381  0.00   0.00   0.00
+24012   2.00  12210  8.09  58.90   8.06
+24338   2.18  12631  8.49   8.45   0.00
+24464   1.56  12800  0.00   0.00   0.00
+26063   2.25  15397  8.52   8.42   0.00
+26183   1.20  15686  0.00   0.00   0.00
+27047   2.20  17265  8.42   8.37   0.00
+27364   2.25  18034  0.00   0.00   0.00
+27438   2.02  18207  8.02   7.95   0.00
+27672   2.80  18788  8.90   8.85   0.00
+48268   0.51   1970  5.12   5.15  31.80
+49047   0.51   2075  5.15  31.80   5.12
+49413   0.71   2130  0.00   0.00   0.00
+51361   1.12   2383  6.71   6.67   0.00
+NaN count after conversion: {'x': 10, 'y': 9, 'z': 22}
+
+Imputation masking experiment (hide known values in 5,000 rows, then predict them):
+    method  RMSE_one_dim_hidden  MAE_one_dim_hidden  RMSE_all_dims_hidden  MAE_all_dims_hidden
+      mean                0.994               0.827                 0.985                0.822
+    median                0.986               0.821                 0.986                0.815
+regression                0.086               0.050                 0.082                0.049
+       knn                0.089               0.048                 0.077                0.055
+chosen method: regression
+remaining NaN: 0
+       carat     x     y     z
+2201    1.00  6.55  6.48  3.96
+2308    1.01  6.66  6.60  3.97
+4778    1.10  6.50  6.47  4.08
+5457    1.01  6.50  6.47  3.97
+10145   1.50  7.15  7.04  4.53
+11156   1.07  6.55  6.62  4.05
+11935   1.00  6.41  6.41  3.96
+13570   1.15  6.88  6.83  4.14
+15914   1.14  6.69  6.69  4.13
+24012   2.00  8.06  8.04  4.98
+24338   2.18  8.49  8.45  5.12
+24464   1.56  7.42  7.41  4.58
+26063   2.25  8.52  8.42  5.17
+26183   1.20  6.81  6.80  4.20
+27047   2.20  8.42  8.37  5.14
+27364   2.25  8.38  8.36  5.17
+27438   2.02  8.02  7.95  4.99
+27672   2.80  8.90  8.85  5.56
+48268   0.51  5.13  5.14  3.17
+49047   0.51  5.13  5.14  3.17
+49413   0.71  5.72  5.73  3.53
+51361   1.12  6.71  6.67  4.11
+
+== 4. INCONSISTENCIES / OUTLIERS ==
+depth_mismatch after imputation: 88 (reported depth vs computed from x,y,z, >1 point apart)
+table > 73: 3 | table < 50: 4 | depth<50 or >75: 5
+price == 0 or negative: 0 | carat <= 0: 0
+IQR outliers after cleaning: {'carat': 1873, 'depth': 2525, 'table': 604, 'price': 3523, 'x': 24, 'y': 20, 'z': 25}
+|z|>3 : {'carat': 432, 'price': 1201}
+table values capped to [50,73]: 7
+carat > 3 kept and flagged: 30
+
+== 5. FEATURE ENGINEERING ==
+skew price 1.62 -> log_price 0.11 | carat 1.11 -> log_carat 0.09
+corr(log_carat, log_price) = 0.966 | corr(carat, price) = 0.922
+corr(volume, carat) = 0.999
+standardised means ~0: 0.0 | std ~1: [1.0]
+one-hot columns: 17
+model-ready shape (53794, 34) | nulls 0
+
+== 6. FINAL ==
+rows raw 53940 -> clean 53794 | columns raw 10 -> clean 25
+          carat     depth     table     price         x         y         z
+count  53794.00  53794.00  53794.00  53794.00  53794.00  53794.00  53794.00
+mean       0.80     61.75     57.46   3933.07      5.73      5.73      3.54
+std        0.47      1.43      2.23   3988.11      1.12      1.11      0.69
+min        0.20     43.00     50.00    326.00      3.73      3.68      1.07
+25%        0.40     61.00     56.00    951.00      4.71      4.72      2.91
+50%        0.70     61.80     57.00   2401.00      5.70      5.71      3.53
+75%        1.04     62.50     59.00   5326.75      6.54      6.54      4.04
+max        5.01     79.00     73.00  18823.00     10.74     10.54      6.98
+final nulls 0 | size_class nulls 0
